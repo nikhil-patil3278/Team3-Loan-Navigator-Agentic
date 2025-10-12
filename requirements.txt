@@ -1,0 +1,27 @@
+# Core web framework
+fastapi>=0.109
+uvicorn[standard]>=0.23
+python-dotenv>=1.0
+pydantic>=2.7
+
+# LangChain / LangGraph stack
+langchain>=0.2.14
+langgraph>=0.2.0
+langchain-openai>=0.2.0
+langchain-community>=0.2.10
+langchain-text-splitters>=0.2.0
+
+# Vector store
+chromadb>=0.5.5
+
+# PDF loading & parsing
+pymupdf==1.26.4
+
+# OpenAI SDK (used by langchain-openai with Azure endpoints)
+openai>=1.43.0
+langchain_chroma>=0.2.6
+# Helpful extras
+tiktoken>=0.5.2
+streamlit>=1.50.0
+plotly>=6.3.1
+mlflow>=3.1
