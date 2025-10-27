@@ -1,20 +1,51 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Setup & Runbook — Loan Navigator
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## 1. Prerequisites
+- Python 3.11+
+- FastAPI, Uvicorn, LangGraph, Streamlit, Plotly, Pandas
+- Optional: MLflow for experiment logging
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## 2. Backend — FastAPI
+```bash
+python -m uvicorn app_main:app --reload --port 8000
+```
+- Environment variables (optional):
+  - `MLFLOW_TRACKING_URI` — your tracking server or `file:///...`
+  - `MLFLOW_EXPERIMENT_NAME` — default `LoanNavigator`
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## 3. Frontend — Streamlit
+```bash
+streamlit run streamlit_app_updated.py
+```
+- Configure backend in the sidebar: `http://127.0.0.1:8000`
+- Tabs: Chat, What‑If Simulator, Policy Q&A, Loans, Top‑Up
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## 4. MLflow UI (local file store)
+**PowerShell**
+```powershell
+$MLRUNS_ABS = "$((Get-Location).Path)\mlruns" -replace '\','/'
+mlflow ui --backend-store-uri "file:///$MLRUNS_ABS" --host 0.0.0.0 --port 5000
+```
+**CMD**
+```bat
+set "MLRUNS_ABS=%CD%\mlruns" & set "MLRUNS_ABS=%MLRUNS_ABS:\=/%" & mlflow ui --backend-store-uri "file:///%MLRUNS_ABS%" --host 0.0.0.0 --port 5000
+```
+
+## 5. Docker (optional)
+Build:
+```bash
+docker build -t mlflow-ui:latest .
+```
+Run:
+```bash
+docker run --name mlflow_ui --rm -p 5000:5000 -v "$(pwd)/mlruns:/app/mlruns" mlflow-ui:latest
+```
+
+## 6. Health Checks
+- `POST /chat` with `{"query": "How many EMIs left for Loan ID 2001?"}`
+- `POST /whatif` with `{"loan_id": "2001", "prepay_amt": 10000, "prepay_month": 6, "mode": "reduce_tenure"}`
+
+## 7. Troubleshooting
+- If MLflow isn't installed, logging is skipped silently.
+- Ensure the backend port (8000) isn't blocked.
+- For artifact visualization, the Streamlit app will attempt local amortization charts when loan details are available.
