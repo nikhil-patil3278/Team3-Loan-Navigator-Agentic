@@ -50,4 +50,6 @@ docker run --name mlflow_ui --rm -p 5000:5000 -v "$(pwd)/mlruns:/app/mlruns" mlf
 - Ensure the backend port (8000) isn't blocked.
 - For artifact visualization, the Streamlit app will attempt local amortization charts when loan details are available.
 
-*** Please check out following link http://loannavigator.hre7dgh3andgfmbe.centralindia.azurecontainer.io:8080/  or http://4.224.128.187:8080/
+## Front End:
+``` Please check out following link http://loannavigator.hre7dgh3andgfmbe.centralindia.azurecontainer.io:8080/  or http://4.224.128.187:8080/```
+
